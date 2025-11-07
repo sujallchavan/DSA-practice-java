@@ -1,14 +1,16 @@
 package Heap;
 
+import Array.productExceptSelf;
+
 public class MaxHeap {
-    private int[] heap;
-    private int size;
+    private int heap[];
     private int capacity;
+    private int size;
 
     public MaxHeap(int capacity) {
         this.capacity = capacity;
         this.size = 0;
-        this.heap = new int[capacity + 1]; // start from index 1
+        this.heap = new int[capacity + 1];
     }
 
     private int parent(int i) {
@@ -29,67 +31,64 @@ public class MaxHeap {
         heap[j] = temp;
     }
 
-    // ✅ Insert element
     public void insert(int val) {
         if (size >= capacity) {
-            System.out.println("Heap is full!");
-            return;
+            System.out.println("full");
         }
+
         heap[++size] = val;
         int i = size;
-        while (i > 1 && heap[i] > heap[parent(i)]) { // Bubble up (larger moves up)
+
+        while (i > 1 && heap[i] > heap[parent(i)]) {
             swap(i, parent(i));
             i = parent(i);
         }
     }
 
-    // ✅ Remove & return maximum element
-    public int extractMax() {
-        if (size == 0)
-            return Integer.MIN_VALUE;
+    public int MaxVal() {
+        if (size == 0) {
+            return 0;
+        }
+
         int max = heap[1];
         heap[1] = heap[size--];
         heapify(1);
         return max;
     }
 
-    // ✅ Maintain max-heap property
     private void heapify(int i) {
         int left = leftChild(i);
         int right = rightChild(i);
         int largest = i;
 
-        if (left <= size && heap[left] > heap[largest])
+        while (left <= size && heap[left] > heap[largest]) {
             largest = left;
-        if (right <= size && heap[right] > heap[largest])
+        }
+
+        while (right <= size && heap[right] > heap[largest]) {
             largest = right;
+        }
 
         if (largest != i) {
             swap(i, largest);
             heapify(largest);
         }
-    }
 
-    // ✅ Print heap
-    public void printHeap() {
-        for (int i = 1; i <= size; i++)
-            System.out.print(heap[i] + " ");
-        System.out.println();
     }
 
     public static void main(String[] args) {
-        MaxHeap heap = new MaxHeap(10);
-        heap.insert(10);
-        heap.insert(5);
-        heap.insert(3);
-        heap.insert(20);
-        heap.insert(15);
+        MaxHeap ob = new MaxHeap(5);
 
-        System.out.println("Max Heap:");
-        heap.printHeap();
+        ob.insert(1);
+        ob.insert(22);
+        ob.insert(21);
+        ob.insert(4);
 
-        System.out.println("Extracted Max: " + heap.extractMax());
-        System.out.println("Heap after extraction:");
-        heap.printHeap();
+        System.out.println("max ele");
+
+        int m = ob.MaxVal();
+
+        System.out.println(m);
     }
+
 }
